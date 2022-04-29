@@ -3,7 +3,6 @@
 <input type="text" name="isbn" placeholder="ISBNコードを入力" value="{{ Request::input('isbn') }}">
 <input type="submit" value="検索する">
 </form>
-
 @if ($book)
 <img src="{{ $book['cover'] }}">
 <br>
@@ -18,6 +17,6 @@
 <br>
 <label>発売日:</label>
 {{ date('Y年m月d日', strtotime($book['pubdate'])) }}
-
+<br>
 @endif
-
+<a href="{{ route('book.index') }}">登録した書籍一覧</a>
