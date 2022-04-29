@@ -19,5 +19,10 @@
 <label>発売日:</label>
 {{ date('Y年m月d日', strtotime($book['pubdate'])) }}
 <br>
+<form action="{{ route('book.store') }}" method="post">
+@csrf
+<input type="hidden" name="isbn" value="{{ $book['isbn'] }}">
+<input type="submit" value="持っている本として登録する">
+</form>
 @endif
 <a href="{{ route('book.index') }}">登録した書籍一覧</a>
