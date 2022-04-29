@@ -1,5 +1,9 @@
 @include('message')
 <a href="{{ route('book.search') }}">ISBN検索</a>
+<form action="{{ route('book.output') }}" method="post">
+@csrf
+<input type="submit" value="CSVダウンロード">
+</form>
 <br>
 <table border="1">
 <tr>

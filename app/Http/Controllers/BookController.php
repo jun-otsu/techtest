@@ -44,4 +44,23 @@ class BookController extends Controller
 		Book::create(['isbn' => $book['isbn'], 'title' => $book['title'], 'author' => $book['author'], 'registered_at' => date('Y-m-d H:i:s')]);
 		return redirect()->route('book.index')->with('success', __('common.message.register_success'));
 	}
+
+	public function csvOutput()
+	{
+		$books = book::all();
+		$stream = fopen('php://temp', 'w');
+			fputcsv($stream, [__('books.isbn'), __('books.title'), __('books.author'), __('books.registered_at')]);
+		foreach($books as $book)
+		{
+			fputcsv($stream, [$book->isbn, $book->title, $book->author, $book->registered_at]);
+		}
+		rewind($stream);
+		$csv = mb_convert_encoding(str_replace(PHP_EOL, "\r\n", stream_get_contents($stream)), 'SJIS', 'UTF-8');
+		$filename = '持っている本一覧_' . date('Ymd'). '.csv';
+		$headers = array(
+			'Content-Type' => 'text/csv',
+			'Content-Disposition' => 'attachment; filename="' . $filename . '"'
+		);
+		return \Response::make($csv, 200, $headers);
+	}
 }
