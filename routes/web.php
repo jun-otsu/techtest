@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,6 +12,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::as('book.')->group(function () {
+	Route::get('search', [BookController::class, 'search'])->name('search');
 });
