@@ -15,4 +15,5 @@ use App\Http\Controllers\BookController;
 Route::as('book.')->group(function () {
 	Route::get('search', [BookController::class, 'search'])->name('search');
 	Route::get('/', [BookController::class, 'index'])->name('index');
+	Route::post('/register', [BookController::class, 'store'])->name('store');
 });
