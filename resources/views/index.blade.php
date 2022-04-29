@@ -1,3 +1,4 @@
+@include('message')
 <a href="{{ route('book.search') }}">ISBN検索</a>
 <br>
 <table border="1">

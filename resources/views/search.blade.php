@@ -1,3 +1,4 @@
+@include('message')
 検索画面
 <form action="{{ route('book.search') }}" method="get">
 <input type="text" name="isbn" placeholder="ISBNコードを入力" value="{{ Request::input('isbn') }}">
