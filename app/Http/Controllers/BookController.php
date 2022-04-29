@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Book;
+use App\Http\Requests\BookRegisterRequest;
 
 class BookController extends Controller
 {
