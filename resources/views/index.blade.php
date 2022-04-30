@@ -1,11 +1,12 @@
 @include('message')
-<a href="{{ route('book.search') }}">ISBN検索</a>
-<form action="{{ route('book.output') }}" method="post">
+<a href="{{ route('book.search') }}" class="btn btn-primary">ISBN検索</a>
+<form action="{{ route('book.output') }}" method="post" style="display:inline">
 @csrf
-<input type="submit" value="CSVダウンロード">
+<input type="submit" value="CSVダウンロード" class="btn btn-primary">
 </form>
 <br>
-<table border="1">
+<br>
+<table border="1" class="table">
 <tr>
 <th></th>
 <th>{{ __('books.isbn') }}</th>
@@ -25,4 +26,6 @@
 登録されている本がありません。
 @endforelse
 </table>
+<div class="d-flex align-items-center justify-content-center">
 {{ $books->links() }}
+</div>
