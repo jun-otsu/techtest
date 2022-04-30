@@ -21,7 +21,7 @@ class BookController extends Controller
 			$client = new Client();
 			$response = $client->request('GET','https://api.openbd.jp/v1/get?isbn=' . $request->isbn);
 		} catch (\GuzzleHttp\Exception\ConnectException $e) {
-			return redirect()->route('book.index')->with('ただいま書籍検索に不具合が生じております。しばらくしてから再度お試しください。');
+			return redirect()->route('book.index')->with('error', 'ただいま書籍検索に不具合が生じております。しばらくしてから再度お試しください。');
 		}
 		$return = json_decode($response->getBody(), true);
 		$book = $return[0]['summary'];
@@ -34,7 +34,7 @@ class BookController extends Controller
 			$client = new Client();
 			$response = $client->request('GET','https://api.openbd.jp/v1/get?isbn='.$request->isbn);
 		} catch (\GuzzleHttp\Exception\ConnectException $e) {
-			return redirect()->route('book.index')->with('ただいま書籍検索に不具合が生じております。しばらくしてから再度お試しください。');
+			return redirect()->route('book.index')->with('error', 'ただいま書籍検索に不具合が生じております。しばらくしてから再度お試しください。');
 		}
 		$return = json_decode($response->getBody(), true);
 		$book = $return[0]['summary'];
