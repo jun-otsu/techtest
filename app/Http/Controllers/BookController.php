@@ -2,30 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\BookApi\BookApi;
+use App\BookApi\BookApiException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Book;
 use App\Http\Requests\BookRegisterRequest;
+use Illuminate\View\View;
 
-class BookController extends Controller
+final class BookController extends Controller
 {
-	public function index()
+    /**
+     * @var BookApi
+     */
+    private $bookApi;
+
+    /**
+     * @param BookApi $bookApi
+     */
+    public function __construct(BookApi $bookApi)
+    {
+        $this->bookApi = $bookApi;
+    }
+
+    public function index(): View
 	{
 		$books = Book::paginate(9);
 		return view('index', compact('books'));
 	}
 
+    /**
+     * @param Request $request
+     * @return View|RedirectResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
 	public function search(Request $request)
 	{
 		try {
-			$client = new Client();
-			$response = $client->request('GET','https://api.openbd.jp/v1/get?isbn=' . $request->isbn);
-		} catch (\GuzzleHttp\Exception\ConnectException $e) {
+            return view('search', [
+                'book' => $this->bookApi->search($request->isbn),
+            ]);
+		} catch (BookApiException $e) {
 			return redirect()->route('book.index')->with('error', 'ただいま書籍検索に不具合が生じております。しばらくしてから再度お試しください。');
 		}
-		$return = json_decode($response->getBody(), true);
-		$book = $return[0]['summary'];
-		return view('search', compact('book'));
 	}
 
 	public function store(BookRegisterRequest $request)
@@ -49,7 +69,7 @@ class BookController extends Controller
 	{
 		$books = book::all();
 		$stream = fopen('php://temp', 'w');
-			fputcsv($stream, [__('books.isbn'), __('books.title'), __('books.author'), __('books.registered_at')]);
+        fputcsv($stream, [__('books.isbn'), __('books.title'), __('books.author'), __('books.registered_at')]);
 		foreach($books as $book)
 		{
 			fputcsv($stream, [$book->isbn, $book->title, $book->author, $book->registered_at]);
